@@ -12,5 +12,5 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  assetsInclude: ["**/*.PNG"],
+  assetsInclude: ["**/*.PNG", "**/*.jpeg", "**/*.jpg", "**/*.webp", "**/*.png"],
 });
