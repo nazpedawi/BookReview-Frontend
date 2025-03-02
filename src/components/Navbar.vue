@@ -19,7 +19,7 @@
           <router-link to="/" class="nav-link" active-class="active"
             >Home</router-link
           >
-          <router-link to="/add-book" class="nav-link" active-class="active"
+          <router-link to="/addbook" class="nav-link" active-class="active"
             >Add New Book</router-link
           >
         </div>
@@ -50,7 +50,9 @@
           </button>
 
           <div v-else>
-            <router-link to="/login" class="btn btn-outline-light btn-lg me-2">Login / Register</router-link>
+            <router-link to="/login" class="btn btn-outline-light btn-lg me-2"
+              >Login / Register</router-link
+            >
           </div>
         </div>
       </div>
@@ -107,16 +109,24 @@
           >
         </li>
         <li class="nav-item">
-          <router-link to="/add-book" class="nav-link" active-class="active"
+          <router-link to="/addbook" class="nav-link" active-class="active"
             >Add New Book</router-link
           >
         </li>
       </ul>
 
       <div class="mt-auto w-100">
-        <button v-if="isLoggedIn" class="btn btn-outline-danger btn-lg w-100" @click="logout">Logout</button>
+        <button
+          v-if="isLoggedIn"
+          class="btn btn-outline-danger btn-lg w-100"
+          @click="logout"
+        >
+          Logout
+        </button>
         <div v-else>
-          <router-link to="/login" class="btn btn-outline-light btn-lg w-100">Login / Register</router-link>
+          <router-link to="/login" class="btn btn-outline-light btn-lg w-100"
+            >Login / Register</router-link
+          >
         </div>
       </div>
     </div>
@@ -124,7 +134,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 // Mock of logged-in state (replace with actual authentication logic)
 const isLoggedIn = ref(false); // Change this based on user's authentication state

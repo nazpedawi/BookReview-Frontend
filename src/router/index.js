@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import BookDetailsView from "@/views/BookDetailsView.vue";
 import LoginView from "@/components/Login.vue";
-import SignupView from "@/components/Signup.vue"; // Import the SignUp component
+import SignupView from "@/components/Signup.vue";
+import AddBook from "@/components/AddBook.vue";
 
 const books = [
   {
@@ -72,25 +73,29 @@ const router = createRouter({
       name: "BookDetails",
       component: BookDetailsView,
       props: (route) => {
-        // Fetch the book using the ID from the route params
         const bookId = parseInt(route.params.id);
         const book = books.find((b) => b.id === bookId);
         return {
           book,
-          basePath: "/images/", // Pass basePath as well
-          reviews: book.reviews, // Pass reviews as well
+          basePath: "/images/",
+          reviews: book.reviews, 
         };
       },
     },
     {
-      path: "/login", // Login route
+      path: "/login",
       name: "Login",
-      component: LoginView, // Login component
+      component: LoginView,
     },
     {
-      path: "/signup", // Sign-up route
+      path: "/signup",
       name: "Signup",
-      component: SignupView, // Sign-up component
+      component: SignupView,
+    },
+    {
+      path: "/addbook",
+      name: "AddBook",
+      component: AddBook,
     },
   ],
 });
