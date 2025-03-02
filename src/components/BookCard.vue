@@ -1,10 +1,11 @@
 <template>
   <div class="col-lg-3 col-md-6 col-sm-12 mb-4 d-flex align-items-stretch">
-    <a
-      :href="`/book/${book.id}`"
+    <router-link
+      :to="{ name: 'BookDetails', params: { id: book.id } }"
       class="card-link text-decoration-none w-100"
       :title="`View details for ${book.title}`"
     >
+
       <div class="card custom-card border-primary">
         <div class="card-body d-flex flex-column">
           <h5 class="card-title text-center book-title">{{ book.title }}</h5>
@@ -25,17 +26,17 @@
           ></p>
 
           <div class="mt-auto">
-            <p class="card-text"><strong>Author</strong>: {{ book.author }}</p>
+            <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
             <p class="card-text">
-              <strong>Genre(s)</strong>: {{ book.genres.join(", ") }}
+              <strong>Genre(s):</strong> {{ book.genres.join(", ") }}
             </p>
             <p class="card-text">
-              <strong>Publication Year</strong>: {{ book.publication_year }}
+              <strong>Publication Year:</strong> {{ book.publication_year }}
             </p>
           </div>
         </div>
       </div>
-    </a>
+    </router-link>
   </div>
 </template>
 

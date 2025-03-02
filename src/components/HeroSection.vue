@@ -29,6 +29,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .background-image {
   height: 550px;
   object-fit: cover;

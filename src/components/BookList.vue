@@ -42,7 +42,7 @@ export default {
           publication_year: 1960,
         },
       ],
-      basePath: "src/assets/images/",
+      basePath: "/images/",
     };
   },
 };

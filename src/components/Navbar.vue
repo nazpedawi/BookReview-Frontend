@@ -3,7 +3,7 @@
     <div class="container">
       <router-link to="/" class="navbar-brand">
         <img
-          src="/src/assets/images/website-logo.PNG"
+          src="/images/website-logo.PNG"
           alt="book review logo"
           width="130"
           height="80"
@@ -25,7 +25,7 @@
         </div>
 
         <div class="d-flex align-items-center">
-          <span class="navbar-text text-light me-5">
+          <span v-if="isLoggedIn" class="navbar-text text-light me-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50"
@@ -40,7 +40,18 @@
             </svg>
             John Doe
           </span>
-          <button class="btn btn-outline-danger btn-lg">Logout</button>
+
+          <button
+            v-if="isLoggedIn"
+            class="btn btn-outline-danger btn-lg"
+            @click="logout"
+          >
+            Logout
+          </button>
+
+          <div v-else>
+            <router-link to="/login" class="btn btn-outline-light btn-lg me-2">Login / Register</router-link>
+          </div>
         </div>
       </div>
 
@@ -103,13 +114,27 @@
       </ul>
 
       <div class="mt-auto w-100">
-        <button class="btn btn-outline-danger btn-lg w-100">Logout</button>
+        <button v-if="isLoggedIn" class="btn btn-outline-danger btn-lg w-100" @click="logout">Logout</button>
+        <div v-else>
+          <router-link to="/login" class="btn btn-outline-light btn-lg w-100">Login / Register</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+
+// Mock of logged-in state (replace with actual authentication logic)
+const isLoggedIn = ref(false); // Change this based on user's authentication state
+
+// Mock logout method (implement real logout logic)
+function logout() {
+  isLoggedIn.value = false;
+  // Add your logout logic here (e.g., clearing tokens, redirecting, etc.)
+}
+</script>
 
 <style scoped>
 .navbar-nav .nav-link {

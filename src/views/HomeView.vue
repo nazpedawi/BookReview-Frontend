@@ -1,6 +1,6 @@
 <template>
   <HeroSection
-    src="src/assets/images/background-books.png"
+    src="/images/background-books.png"
     title="Find Your Next Great Read"
   />
   <div class="text-center mt-4 mb-2">
