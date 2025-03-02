@@ -50,9 +50,9 @@
     },
     data() {
       return {
-        book_id: this.bookId, 
-        rating: null, //
-        review_text: "", 
+        book_id: this.bookId,
+        rating: null,
+        review_text: "",
         ratingError: false,
       };
     },
@@ -98,13 +98,14 @@
   
   <style scoped>
   .rating-label {
-    display: inline-block; 
+    display: inline-block;
     margin-right: 10px;
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
   }
   
   .star-rating {
     display: inline-block;
+    margin-bottom: 1rem; /* Add space between the stars and textarea */
   }
   
   .star {
@@ -119,11 +120,15 @@
   }
   
   .rating-error {
-    display: inline-block; 
+    display: inline-block;
     color: red;
     font-size: 1rem;
     margin-left: 10px;
     font-weight: bold;
+  }
+  
+  textarea.form-control {
+    margin-top: 1rem; /* Add space between rating and textarea */
   }
   </style>
   

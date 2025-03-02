@@ -14,6 +14,29 @@ const books = [
     author: "F. Scott Fitzgerald",
     genres: ["Fiction", "Classic"],
     publication_year: 1925,
+    reviews: [
+      {
+        userFirstName: "John",
+        userLastName: "Doe",
+        reviewDate: "2025-03-01T12:30:00",
+        rating: 4,
+        reviewText: "A great read! The story of Gatsby's obsession with Daisy was captivating.",
+      },
+      {
+        userFirstName: "Jane",
+        userLastName: "Smith",
+        reviewDate: "2025-02-28T15:00:00",
+        rating: 5,
+        reviewText: "Absolutely loved it! The writing was poetic and deeply insightful.",
+      },
+      {
+        userFirstName: "Alice",
+        userLastName: "Johnson",
+        reviewDate: "2025-02-25T18:45:00",
+        rating: 3,
+        reviewText: "Good book, but I found some parts of the story a bit slow. Still, worth reading.",
+      },
+    ],
   },
   {
     id: 2,
@@ -24,6 +47,15 @@ const books = [
     author: "Harper Lee",
     genres: ["Fiction", "Classic", "Drama"],
     publication_year: 1960,
+    reviews: [
+      {
+        userFirstName: "Emily",
+        userLastName: "Davis",
+        reviewDate: "2025-02-15T14:00:00",
+        rating: 5,
+        reviewText: "A thought-provoking and emotional story about justice and racism.",
+      },
+    ],
   },
 ];
 
@@ -46,6 +78,7 @@ const router = createRouter({
         return {
           book,
           basePath: "/images/", // Pass basePath as well
+          reviews: book.reviews, // Pass reviews as well
         };
       },
     },
