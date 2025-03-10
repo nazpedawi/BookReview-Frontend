@@ -1,7 +1,7 @@
 <template>
   <div class="col-lg-3 col-md-6 col-sm-12 mb-4 d-flex align-items-stretch">
     <router-link
-      :to="{ name: 'BookDetails', params: { id: book.id } }"
+       :to="`/book/${book.book_id}`"
       class="card-link text-decoration-none w-100"
       :title="`View details for ${book.title}`"
     >
@@ -28,7 +28,13 @@
           <div class="mt-auto">
             <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
             <p class="card-text">
-              <strong>Genre(s):</strong> {{ book.genres.join(", ") }}
+
+    <p v-if="Array.isArray(book.genres)">
+      Genres: {{ book.genres.join(", ") }}
+    </p>
+    <p v-else>
+      Genres: {{ book.genres }}
+    </p>
             </p>
             <p class="card-text">
               <strong>Publication Year:</strong> {{ book.publication_year }}

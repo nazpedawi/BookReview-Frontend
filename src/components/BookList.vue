@@ -3,7 +3,7 @@
     <div class="row">
       <BookCard
         v-for="book in books"
-        :key="book.id"
+        :key="book.book_id"
         :book="book"
         :basePath="basePath"
       />
@@ -13,6 +13,8 @@
 
 <script>
 import BookCard from "./BookCard.vue";
+import axios from "axios";
+import { API_ENDPOINTS } from "@/config"; // Ensure this contains the correct API URL
 
 export default {
   components: {
@@ -20,30 +22,33 @@ export default {
   },
   data() {
     return {
-      books: [
-        {
-          id: 1,
-          title: "The Great Gatsby",
-          cover_image: "gatsby.webp",
-          description:
-            "Set in the Jazz Age of the 1920s, The Great Gatsby follows the story of Jay Gatsby, a wealthy and mysterious man who throws lavish parties in hopes of reuniting with his lost love, Daisy Buchanan. Narrated by Nick Carraway, who moves next door to Gatsby, the novel explores themes of love, obsession, and the corruption of the American Dream. As Gatsby's pursuit of Daisy leads to tragic consequences, Fitzgerald reveals the emptiness of wealth and the fragility of human dreams.",
-          author: "F. Scott Fitzgerald",
-          genres: ["Fiction", "Classic"],
-          publication_year: 1925,
-        },
-        {
-          id: 2,
-          title: "To Kill a Mockingbird",
-          cover_image: "01374084_to-kill-a-mockingbird.jpg",
-          description:
-            "A novel by Harper Lee, set in the American South during the Great Depression.",
-          author: "Harper Lee",
-          genres: ["Fiction", "Classic", "Drama"],
-          publication_year: 1960,
-        },
-      ],
+      books: [],
       basePath: "/images/",
+      isLoading: true,
+      error: null,
     };
+  },
+  async mounted() {
+    await this.loadBooks();
+  },
+  methods: {
+    /**
+     * Fetch books from API when the page loads
+     */
+    async loadBooks() {
+      try {
+        this.isLoading = true;
+        this.error = null;
+
+        const response = await axios.get(API_ENDPOINTS.books);
+        this.books = response.data;
+      } catch (error) {
+        console.error("Error fetching books:", error);
+        this.error = error.message || "Failed to load books.";
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
 };
 </script>

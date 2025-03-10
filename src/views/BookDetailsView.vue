@@ -10,27 +10,50 @@
   import BookDetails from "@/components/BookDetails.vue";
   import AddReview from "@/components/AddReview.vue";
   import Reviews from "@/components/Reviews.vue";
-  
-  export default {
-    components: {
-      BookDetails,
+  import axios from "axios";
+import { API_ENDPOINTS } from "@/config";
+
+export default {
+  components: {
+    BookDetails,
       AddReview,
       Reviews,
+  },
+  data() {
+    return {
+      book: null,
+      reviews: [],
+      bookId: this.$route.params.id,
+      basePath: "/images/",
+      isLoading: true,
+      error: null,
+    };
+  },
+  async mounted() {
+    await this.loadBookDetails();
+  },
+  methods: {
+    /**
+     * Fetch books from API when the page loads
+     */
+    async loadBookDetails() {
+      try {
+        this.isLoading = true;
+        this.error = null;
+
+        const response = await axios.get(`${API_ENDPOINTS.books}/${this.bookId}`);
+        const { book, reviews } = response.data;
+        
+        this.book = book;
+        this.reviews = reviews;
+      } catch (error) {
+        console.error("Error fetching book details:", error);
+        this.error = error.message || "Failed to load book.";
+      } finally {
+        this.isLoading = false;
+      }
     },
-    props: {
-      book: {
-        type: Object,
-        required: true,
-      },
-      basePath: {
-        type: String,
-        required: true,
-      },
-      reviews: {
-        type: Array,
-        required: true,
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
   
