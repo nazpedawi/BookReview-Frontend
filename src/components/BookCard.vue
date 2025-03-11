@@ -29,12 +29,9 @@
             <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
             <p class="card-text">
 
-    <p v-if="Array.isArray(book.genres)">
-      Genres: {{ book.genres.join(", ") }}
-    </p>
-    <p v-else>
-      Genres: {{ book.genres }}
-    </p>
+              <p class="card-text">
+                <strong>Genre(s):</strong> {{ book.genres.join(", ") }}
+              </p>
             </p>
             <p class="card-text">
               <strong>Publication Year:</strong> {{ book.publication_year }}

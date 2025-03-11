@@ -4,7 +4,6 @@
 
     <div v-if="reviews.length > 0">
       <ul class="list-group">
-        <!-- Loop through reviews -->
         <li
           v-for="(review, index) in reviews"
           :key="index"
@@ -13,17 +12,15 @@
           <div
             class="d-flex justify-content-between align-items-center review-header"
           >
-            <!-- User info -->
             <div class="d-flex align-items-center">
               <strong>{{ review.firstName }} {{ review.lastName }}</strong>
             </div>
-            <!-- Review date -->
+
             <small class="review-date">{{
               formatDate(review.review_date)
             }}</small>
           </div>
 
-          <!-- Rating stars -->
           <div class="stars">
             <span
               v-for="star in 5"
@@ -35,13 +32,12 @@
             </span>
           </div>
 
-          <!-- Review text -->
           <p class="card-text">{{ review.review_text }}</p>
         </li>
       </ul>
     </div>
 
-    <!-- Message if no reviews -->
+    <!-- Message if there are no reviews -->
     <div v-else>
       <p class="text-center mt-3">
         No reviews yet. Be the first to review this book!

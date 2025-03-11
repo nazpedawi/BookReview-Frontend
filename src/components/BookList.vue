@@ -43,8 +43,7 @@ export default {
         const response = await axios.get(API_ENDPOINTS.books);
         this.books = response.data;
       } catch (error) {
-        console.error("Error fetching books:", error);
-        this.error = error.message || "Failed to load books.";
+        this.error = error.response?.data?.message || "Failed to load books.";
       } finally {
         this.isLoading = false;
       }
