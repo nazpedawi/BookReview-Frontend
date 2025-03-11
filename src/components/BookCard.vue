@@ -13,7 +13,7 @@
           <div class="image-container d-block mx-auto">
             <div class="image-wrapper">
               <img
-                :src="basePath + book.cover_image"
+                :src="getCoverImagePath(book.cover_image)"
                 :alt="book.title"
                 class="card-img-top img-fluid book-cover"
               />
@@ -46,12 +46,16 @@
 <script>
 export default {
   props: {
-    book: Object,
-    basePath: String, // The base path for book cover images
+    book: Object
   },
+  methods: {
+    getCoverImagePath(relativePath) {
+      const baseUrl = 'http://localhost/';
+      return baseUrl + relativePath;
+    }
+  }
 };
 </script>
-
 <style scoped>
 .image-wrapper {
   width: 100%;

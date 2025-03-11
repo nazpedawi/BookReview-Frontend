@@ -10,7 +10,7 @@
     <!-- Error Message -->
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-    <BookDetails v-if="book" :book="book" :basePath="basePath" />
+    <BookDetails v-if="book" :book="book" />
     <AddReview v-if="book" :book="book" @review-submitted="addNewReview" />
     <Reviews v-if="book" :reviews="reviews" />
   </div>

@@ -170,9 +170,7 @@ export default {
           publication_year: "",
           cover_image: null,
         };
-
-        // Emit event to notify parent component
-        this.$emit("book-added", response.data);
+        
       } catch (err) {
         this.error = err.response?.data || "Failed to add book.";
       }

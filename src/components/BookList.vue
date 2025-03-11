@@ -5,7 +5,6 @@
         v-for="book in books"
         :key="book.book_id"
         :book="book"
-        :basePath="basePath"
       />
     </div>
   </div>
@@ -14,7 +13,7 @@
 <script>
 import BookCard from "./BookCard.vue";
 import axios from "axios";
-import { API_ENDPOINTS } from "@/config"; // Ensure this contains the correct API URL
+import { API_ENDPOINTS } from "@/config";
 
 export default {
   components: {
@@ -23,7 +22,6 @@ export default {
   data() {
     return {
       books: [],
-      basePath: "/images/",
       isLoading: true,
       error: null,
     };
@@ -32,9 +30,6 @@ export default {
     await this.loadBooks();
   },
   methods: {
-    /**
-     * Fetch books from API when the page loads
-     */
     async loadBooks() {
       try {
         this.isLoading = true;
