@@ -1,23 +1,23 @@
 <template>
-    <div class="container-fluid mt-4 mb-4">
-      <BookDetails v-if="book" :book="book" :basePath="basePath" />
-      <AddReview v-if="book" :book="book"/>
-      <Reviews v-if="book" :reviews="reviews" />
-    </div>
-  </template>
-  
-  <script>
-  import BookDetails from "@/components/BookDetails.vue";
-  import AddReview from "@/components/AddReview.vue";
-  import Reviews from "@/components/Reviews.vue";
-  import axios from "axios";
+  <div class="container-fluid mt-4 mb-4">
+    <BookDetails v-if="book" :book="book" :basePath="basePath" />
+    <AddReview v-if="book" :book="book" @review-submitted="addNewReview" />
+    <Reviews v-if="book" :reviews="reviews" />
+  </div>
+</template>
+
+<script>
+import BookDetails from "@/components/BookDetails.vue";
+import AddReview from "@/components/AddReview.vue";
+import Reviews from "@/components/Reviews.vue";
+import axios from "axios";
 import { API_ENDPOINTS } from "@/config";
 
 export default {
   components: {
     BookDetails,
-      AddReview,
-      Reviews,
+    AddReview,
+    Reviews,
   },
   data() {
     return {
@@ -33,9 +33,6 @@ export default {
     await this.loadBookDetails();
   },
   methods: {
-    /**
-     * Fetch books from API when the page loads
-     */
     async loadBookDetails() {
       try {
         this.isLoading = true;
@@ -43,7 +40,7 @@ export default {
 
         const response = await axios.get(`${API_ENDPOINTS.books}/${this.bookId}`);
         const { book, reviews } = response.data;
-        
+
         this.book = book;
         this.reviews = reviews;
       } catch (error) {
@@ -53,7 +50,10 @@ export default {
         this.isLoading = false;
       }
     },
+    addNewReview(newReview) {
+      // Update the reviews list dynamically
+      this.reviews.unshift(newReview);
+    },
   },
 };
 </script>
-  
