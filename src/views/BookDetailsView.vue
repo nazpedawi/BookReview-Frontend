@@ -1,5 +1,15 @@
 <template>
   <div class="container-fluid mt-4 mb-4">
+    <!-- Loading Spinner -->
+    <div v-if="isLoading" class="spinner-container text-center">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div v-if="error" class="alert alert-danger">{{ error }}</div>
+
     <BookDetails v-if="book" :book="book" :basePath="basePath" />
     <AddReview v-if="book" :book="book" @review-submitted="addNewReview" />
     <Reviews v-if="book" :reviews="reviews" />
@@ -38,7 +48,9 @@ export default {
         this.isLoading = true;
         this.error = null;
 
-        const response = await axios.get(`${API_ENDPOINTS.books}/${this.bookId}`);
+        const response = await axios.get(
+          `${API_ENDPOINTS.books}/${this.bookId}`
+        );
         const { book, reviews } = response.data;
 
         this.book = book;
@@ -51,7 +63,7 @@ export default {
       }
     },
     addNewReview(newReview) {
-      // Update the reviews list dynamically
+      // Update the reviews list
       this.reviews.unshift(newReview);
     },
   },

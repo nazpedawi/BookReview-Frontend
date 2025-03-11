@@ -76,7 +76,7 @@ export default {
 
       const reviewData = {
         book_id: this.book_id,
-        user_id: 22,
+        user_id: 15,   // will change this later to get the current logged in user's id
         review_text: this.review_text,
         rating: this.rating,
       };
