@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getCoverImagePath(relativePath) {
-      const baseUrl = 'http://localhost/';
+      const baseUrl = 'http://localhost/images/';
       return baseUrl + relativePath;
     }
   }

@@ -2,7 +2,6 @@
   <div class="container my-5">
     <div class="card mb-3 book-details-card custom-card">
       <div class="row no-gutters">
-    
         <div class="col-md-4">
           <img
             :src="getCoverImagePath(book.cover_image)"
@@ -20,7 +19,8 @@
                 <strong>Author:</strong> {{ book.author }}
               </p>
               <p class="card-text">
-                <strong>Genre(s):</strong> {{ book.genres.join(", ") }}
+                <strong>Genre(s):</strong>
+                {{ book.genres.map((genre) => genre.name).join(", ") }}
               </p>
               <p class="card-text">
                 <strong>Publication Year:</strong> {{ book.publication_year }}
@@ -57,14 +57,14 @@
 <script>
 export default {
   props: {
-    book: Object
+    book: Object,
   },
   methods: {
     getCoverImagePath(relativePath) {
-      const baseUrl = 'http://localhost/';
+      const baseUrl = "http://localhost/images/";
       return baseUrl + relativePath;
-    }
-  }
+    },
+  },
 };
 </script>
 
