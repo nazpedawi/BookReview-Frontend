@@ -7,12 +7,27 @@
       </div>
     </div>
 
-    <!-- Error Message -->
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-    <BookDetails v-if="book" :book="book" />
+    <div v-if="alertMessage" class="alert alert-success fade show" role="alert">
+      {{ alertMessage }}
+    </div>
+
+    <BookDetails
+      v-if="book"
+      :book="book"
+      @request-delete="openDeleteModal"
+      :deleteBook="deleteBook"
+    />
     <AddReview v-if="book" :book="book" @review-submitted="addNewReview" />
     <Reviews v-if="book" :reviews="reviews" />
+
+    <!-- Delete Confirmation Modal -->
+    <DeleteModal
+      v-if="isDeleteModalOpen"
+      @confirm-delete="deleteBook"
+      @close-modal="isDeleteModalOpen = false"
+    />
   </div>
 </template>
 
@@ -20,6 +35,7 @@
 import BookDetails from "@/components/BookDetails.vue";
 import AddReview from "@/components/AddReview.vue";
 import Reviews from "@/components/Reviews.vue";
+import DeleteModal from "@/components/DeleteBook.vue";
 import axios from "axios";
 import { API_ENDPOINTS } from "@/config";
 
@@ -28,15 +44,17 @@ export default {
     BookDetails,
     AddReview,
     Reviews,
+    DeleteModal,
   },
   data() {
     return {
       book: null,
       reviews: [],
       bookId: this.$route.params.id,
-      basePath: "/images/",
       isLoading: true,
       error: null,
+      isDeleteModalOpen: false,
+      alertMessage: null,
     };
   },
   async mounted() {
@@ -60,6 +78,27 @@ export default {
         this.error = error.message || "Failed to load book.";
       } finally {
         this.isLoading = false;
+      }
+    },
+    openDeleteModal() {
+      this.isDeleteModalOpen = true;
+    },
+    async deleteBook() {
+      try {
+        await axios.delete(`${API_ENDPOINTS.books}/${this.bookId}`, {
+          headers: { "Content-Type": "application/json" },
+        });
+
+        this.alertMessage = "Book deleted successfully";
+
+        // Wait a few seconds then redirect to home
+        setTimeout(() => {
+          this.$router.push("/");
+        }, 3000);
+      } catch (error) {
+        console.error("Error deleting book:", error);
+      } finally {
+        this.isDeleteModalOpen = false;
       }
     },
     addNewReview(newReview) {

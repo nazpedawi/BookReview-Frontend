@@ -5,6 +5,12 @@
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
     <div v-if="success" class="alert alert-success">{{ success }}</div>
 
+    <div v-if="isLoading" class="spinner-container text-center">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
     <form @submit.prevent="submitForm">
       <!-- Book Title -->
       <div class="mb-3">

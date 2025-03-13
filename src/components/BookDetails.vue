@@ -40,7 +40,7 @@
                 </router-link>
 
                 <button
-                  type="button"
+                  @click="$emit('request-delete')"
                   class="btn btn-outline-danger btn-lg w-100"
                 >
                   Delete
