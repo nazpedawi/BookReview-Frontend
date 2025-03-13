@@ -1,15 +1,15 @@
 <template>
     <div class="modal fade" id="deleteModal" ref="modal">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
             <h5 class="modal-title">Confirm Delete</h5>
-            <button type="button" class="btn-close" @click="close"></button>
+            <button type="button" class="btn-close btn-close-white" @click="close"></button>
           </div>
           <div class="modal-body">
             Are you sure you want to delete this book?
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer border-0">
             <button type="button" class="btn btn-secondary" @click="close">Cancel</button>
             <button type="button" class="btn btn-danger" @click="confirm">Delete</button>
           </div>
@@ -49,4 +49,5 @@
     },
   };
   </script>
+
   
