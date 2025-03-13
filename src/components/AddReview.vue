@@ -1,45 +1,52 @@
 <template>
   <div class="add-review-form mt-5 text-white p-4">
-    <h3>Write a Review</h3>
 
-    <div v-if="error" class="alert alert-danger">{{ error }}</div>
-    <div v-if="success" class="alert alert-success">{{ success }}</div>
+      <h3>Write a Review</h3>
 
-    <form @submit.prevent="submitReview">
-      <div class="form-group">
-        <h5 class="rating-label">Rating</h5>
-        <div class="star-rating">
-          <span
-            v-for="value in [1, 2, 3, 4, 5]"
-            :key="value"
-            class="star"
-            :class="{ filled: value <= (hoverRating || rating) }"
-            @click="setRating(value)"
-            @mouseover="hoverRating = value"
-            @mouseleave="hoverRating = null"
-          >
-            &#9733;
-          </span>
+      <div v-if="error" class="alert alert-danger">{{ error }}</div>
+      <div v-if="success" class="alert alert-success">{{ success }}</div>
+
+      <div v-if="isLoggedIn">
+      <form @submit.prevent="submitReview">
+        <div class="form-group">
+          <h5 class="rating-label">Rating</h5>
+          <div class="star-rating">
+            <span
+              v-for="value in [1, 2, 3, 4, 5]"
+              :key="value"
+              class="star"
+              :class="{ filled: value <= (hoverRating || rating) }"
+              @click="setRating(value)"
+              @mouseover="hoverRating = value"
+              @mouseleave="hoverRating = null"
+            >
+              &#9733;
+            </span>
+          </div>
+          <div v-if="ratingError" class="rating-error">
+            Please select a rating from 1 to 5.
+          </div>
         </div>
-        <div v-if="ratingError" class="rating-error">
-          Please select a rating from 1 to 5.
+
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            v-model="review_text"
+            rows="4"
+            placeholder="Write your review here..."
+            required
+          ></textarea>
         </div>
-      </div>
 
-      <div class="form-group">
-        <textarea
-          class="form-control"
-          v-model="review_text"
-          rows="4"
-          placeholder="Write your review here..."
-          required
-        ></textarea>
-      </div>
+        <button type="submit" class="btn btn-outline-light btn-lg w-100 mt-3">
+          Submit Review
+        </button>
+      </form>
+    </div>
 
-      <button type="submit" class="btn btn-outline-light btn-lg w-100 mt-3">
-        Submit Review
-      </button>
-    </form>
+    <div v-if="!isLoggedIn">
+      <p class="text-center mt-3">Login first to review this book!</p>
+    </div>
   </div>
 </template>
 
@@ -60,7 +67,13 @@ export default {
       ratingError: false,
       error: null,
       success: null,
+      isLoggedIn: false, 
+      user_id: null,
     };
+  },
+  created() {
+    // Fetch the user data when the component is created
+    this.checkIfLoggedIn();
   },
   methods: {
     setRating(value) {
@@ -76,7 +89,7 @@ export default {
 
       const reviewData = {
         book_id: this.book_id,
-        user_id: 15,   // will change this later to get the current logged in user's id
+        user_id: this.user_id, // will change this later to get the current logged-in user's ID
         review_text: this.review_text,
         rating: this.rating,
       };
@@ -97,6 +110,26 @@ export default {
         this.rating = null;
       } catch (err) {
         this.error = err.response?.data || "Failed to submit review.";
+      }
+    },
+
+    async checkIfLoggedIn() {
+      const token = localStorage.getItem("authToken");
+
+      if (token) {
+        try {
+          const response = await axios.get(API_ENDPOINTS.users.me, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          this.isLoggedIn = true;
+          this.user_id = response.data.id; 
+        } catch (error) {
+          this.isLoggedIn = false; 
+          this.user_id = null;
+        }
+      } else {
+        this.isLoggedIn = false;
+        this.user_id = null;
       }
     },
   },

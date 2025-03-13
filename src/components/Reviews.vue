@@ -2,6 +2,7 @@
   <div class="reviews-section mt-5 text-white">
     <h3>Reviews</h3>
 
+    <!-- Display reviews if available -->
     <div v-if="reviews.length > 0">
       <ul class="list-group">
         <li

@@ -16,43 +16,22 @@
         id="navbarTogglerDemo03"
       >
         <div class="navbar-nav">
-          <router-link to="/" class="nav-link" active-class="active"
-            >Home</router-link
-          >
-          <router-link to="/addbook" class="nav-link" active-class="active"
-            >Add New Book</router-link
-          >
+          <router-link to="/" class="nav-link" active-class="active">Home</router-link>
+          <router-link v-if="isAdmin" to="/addbook" class="nav-link" active-class="active">Add New Book</router-link>
         </div>
 
         <div class="d-flex align-items-center">
           <span v-if="isLoggedIn" class="navbar-text text-light me-5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
-              fill="currentColor"
-              class="bi bi-person-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
             </svg>
-            John Doe
+            {{ user?.username }}
           </span>
 
-          <button
-            v-if="isLoggedIn"
-            class="btn btn-outline-danger btn-lg"
-            @click="logout"
-          >
-            Logout
-          </button>
+          <button v-if="isLoggedIn" class="btn btn-outline-danger btn-lg" @click="logout">Logout</button>
 
           <div v-else>
-            <router-link to="/login" class="btn btn-outline-light btn-lg me-2"
-              >Login / Register</router-link
-            >
+            <router-link to="/login" class="btn btn-outline-light btn-lg me-2">Login / Register</router-link>
           </div>
         </div>
       </div>
@@ -71,79 +50,92 @@
   </nav>
 
   <!-- Sidebar (for smaller screens) -->
-  <div
-    class="offcanvas offcanvas-end text-bg-dark"
-    tabindex="-1"
-    id="sidebar"
-    aria-labelledby="sidebarLabel"
-  >
+  <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header">
-      <button
-        type="button"
-        class="btn-close btn-close-white"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column align-items-center">
       <div class="d-flex flex-column align-items-center mb-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="70"
-          height="70"
-          fill="currentColor"
-          class="bi bi-person-fill mb-2"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-person-fill mb-2" viewBox="0 0 16 16">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
         </svg>
-        <span class="text-light fs-5"> John Doe </span>
+        <span class="text-light fs-5">{{ user?.username }}</span>
       </div>
 
       <ul class="navbar-nav w-100">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" active-class="active"
-            >Home</router-link
-          >
+          <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/addbook" class="nav-link" active-class="active"
-            >Add New Book</router-link
-          >
+          <router-link v-if="isAdmin" to="/addbook" class="nav-link" active-class="active">Add New Book</router-link>
         </li>
       </ul>
 
       <div class="mt-auto w-100">
-        <button
-          v-if="isLoggedIn"
-          class="btn btn-outline-danger btn-lg w-100"
-          @click="logout"
-        >
-          Logout
-        </button>
+        <button v-if="isLoggedIn" class="btn btn-outline-danger btn-lg w-100" @click="logout">Logout</button>
         <div v-else>
-          <router-link to="/login" class="btn btn-outline-light btn-lg w-100"
-            >Login / Register</router-link
-          >
+          <router-link to="/login" class="btn btn-outline-light btn-lg w-100">Login / Register</router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script>
+import axios from 'axios';
+import { API_ENDPOINTS } from '@/config';
 
-// Mock of logged-in state (replace with actual authentication logic)
-const isLoggedIn = ref(false); // Change this based on user's authentication state
+export default {
+  data() {
+    return {
+      user: null,
+      isLoggedIn: false,
+      isAdmin: false, 
+    };
+  },
+  methods: {
+    async fetchUser() {
+      const token = localStorage.getItem("authToken");
 
-// Mock logout method (implement real logout logic)
-function logout() {
-  isLoggedIn.value = false;
-  // Add your logout logic here (e.g., clearing tokens, redirecting, etc.)
-}
+      if (token) {
+        try {
+          const response = await axios.get(API_ENDPOINTS.users.me, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          this.user = response.data;
+          this.isLoggedIn = true;
+
+          if (this.user.role === 'Admin') {
+            this.isAdmin = true;
+          } else {
+            this.isAdmin = false;
+          }
+        } catch (error) {
+          this.isLoggedIn = false;
+          this.user = null;
+        }
+      }
+    },
+    logout() {
+      this.isLoggedIn = false;
+      this.user = null;
+      localStorage.removeItem("authToken");
+      this.$router.push("/");
+    },
+  },
+  mounted() {
+    this.fetchUser(); // Fetch user when the component is mounted
+  },
+  watch: {
+    isLoggedIn(newVal) {
+      if (newVal) {
+        this.fetchUser(); // Re-fetch user after logging in
+      } else {
+        this.user = null; // Clear user data if logged out
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -19,7 +19,6 @@
                     required
                   />
                 </div>
-
                 <div class="col-md-6">
                   <label for="lastName" class="form-label">Last Name</label>
                   <input
@@ -31,7 +30,6 @@
                   />
                 </div>
               </div>
-
               <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input
@@ -42,7 +40,6 @@
                   required
                 />
               </div>
-
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input
@@ -53,7 +50,6 @@
                   required
                 />
               </div>
-
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input
@@ -64,15 +60,10 @@
                   required
                 />
               </div>
-
               <!-- Hidden input for role, defaulting to "RegularUser" -->
               <input type="hidden" v-model="role" value="RegularUser" />
-
               <div class="mb-3 text-center">
-                <button
-                  type="submit"
-                  class="btn btn-outline-light btn-lg w-100"
-                >
+                <button type="submit" class="btn btn-outline-light btn-lg w-100">
                   Sign Up
                 </button>
               </div>
@@ -89,6 +80,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { API_ENDPOINTS } from "@/config"; // Ensure this exports your API endpoints
+
 export default {
   data() {
     return {
@@ -101,26 +95,40 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      // Handle form submission
-      const userData = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        role: this.role,
-      };
+    async submitForm() {
+      // Create a FormData object and append the form fields
+      const formData = new FormData();
+      formData.append("firstName", this.firstName);
+      formData.append("lastName", this.lastName);
+      formData.append("username", this.username);
+      formData.append("password", this.password);
+      formData.append("email", this.email);
+      formData.append("role", this.role);
 
-      // You can send userData to the API for processing
-      console.log("Submitted data:", userData);
-
-      // Example of form reset (optional)
-      this.firstName = "";
-      this.lastName = "";
-      this.username = "";
-      this.password = "";
-      this.email = "";
+      try {
+        // Send the POST request using Axios with multipart/form-data
+        const response = await axios.post(
+          `${API_ENDPOINTS.users.signup}`, // e.g., "/users/signup"
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("User created successfully", response.data);
+        // Optionally, show a success message or redirect to the login page
+        this.$router.push("/login");
+      } catch (error) {
+        console.error("Error creating user", error.response?.data || error);
+      } finally {
+        // Optionally reset the form fields
+        this.firstName = "";
+        this.lastName = "";
+        this.username = "";
+        this.password = "";
+        this.email = "";
+      }
     },
   },
 };
@@ -154,6 +162,7 @@ export default {
 .text-center a {
   color: #f8f9fa;
 }
+
 .text-center a:hover {
   text-decoration: underline;
 }
