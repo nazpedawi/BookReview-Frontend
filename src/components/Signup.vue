@@ -80,8 +80,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import { API_ENDPOINTS } from "@/config"; // Ensure this exports your API endpoints
+import { useAuthStore } from "@/stores/auth";
 
 export default {
   data() {
@@ -94,40 +93,28 @@ export default {
       role: "RegularUser",
     };
   },
+
+  computed: {
+    authStore() {
+      return useAuthStore(); 
+    },
+  },
   methods: {
     async submitForm() {
-      // Create a FormData object and append the form fields
-      const formData = new FormData();
-      formData.append("firstName", this.firstName);
-      formData.append("lastName", this.lastName);
-      formData.append("username", this.username);
-      formData.append("password", this.password);
-      formData.append("email", this.email);
-      formData.append("role", this.role);
+      const userData = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        role: this.role,
+      };
 
       try {
-        // Send the POST request using Axios with multipart/form-data
-        const response = await axios.post(
-          `${API_ENDPOINTS.users.signup}`, // e.g., "/users/signup"
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log("User created successfully", response.data);
-        // Optionally, show a success message or redirect to the login page
+        await this.authStore.signup(userData); 
         this.$router.push("/login");
       } catch (error) {
-        console.error("Error creating user", error.response?.data || error);
-      } finally {
-        // Optionally reset the form fields
-        this.firstName = "";
-        this.lastName = "";
-        this.username = "";
-        this.password = "";
-        this.email = "";
+        console.error("Signup error", error);
       }
     },
   },

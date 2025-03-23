@@ -33,7 +33,7 @@
                 class="card-footer d-flex flex-column flex-md-row justify-content-between"
               >
                 <router-link
-                  v-if="isAdmin"
+                  v-if="authStore.isAdmin"
                   :to="`/editbook/${book.book_id}`"
                   class="btn btn-outline-light btn-lg mb-2 mb-md-0 w-100 w-md-50 me-md-2"
                 >
@@ -41,7 +41,7 @@
                 </router-link>
 
                 <button
-                  v-if="isAdmin"
+                  v-if="authStore.isAdmin"
                   @click="$emit('request-delete')"
                   class="btn btn-outline-danger btn-lg w-100"
                 >
@@ -57,60 +57,21 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { API_ENDPOINTS } from '@/config';
+import { useAuthStore } from "@/stores/auth";
 
 export default {
   props: {
     book: Object,
   },
-  data() {
-    return {
-      user: null,
-      isLoggedIn: false,
-      isAdmin: false,
-    };
+  computed: {
+    authStore() {
+      return useAuthStore();
+    },
   },
   methods: {
-    async fetchUser() {
-      const token = localStorage.getItem("authToken");
-
-      if (token) {
-        try {
-          const response = await axios.get(API_ENDPOINTS.users.me, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          this.user = response.data;
-          this.isLoggedIn = true;
-
-          // Check if the user is an admin
-          if (this.user.role === 'Admin') {
-            this.isAdmin = true;
-          } else {
-            this.isAdmin = false;
-          }
-        } catch (error) {
-          this.isLoggedIn = false;
-          this.user = null;
-        }
-      }
-    },
     getCoverImagePath(relativePath) {
       const baseUrl = "http://localhost/images/";
       return baseUrl + relativePath;
-    },
-  },
-  mounted() {
-    this.fetchUser(); // Fetch user when the component is mounted
-  },
-  watch: {
-    isLoggedIn(newVal) {
-      if (newVal) {
-        this.fetchUser(); // Re-fetch user after logging in
-      } else {
-        this.user = null; // Clear user data if logged out
-        this.isAdmin = false; // Reset admin status
-      }
     },
   },
 };

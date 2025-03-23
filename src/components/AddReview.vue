@@ -1,12 +1,11 @@
 <template>
   <div class="add-review-form mt-5 text-white p-4">
+    <h3>Write a Review</h3>
 
-      <h3>Write a Review</h3>
+    <div v-if="error" class="alert alert-danger">{{ error }}</div>
+    <div v-if="success" class="alert alert-success">{{ success }}</div>
 
-      <div v-if="error" class="alert alert-danger">{{ error }}</div>
-      <div v-if="success" class="alert alert-success">{{ success }}</div>
-
-      <div v-if="isLoggedIn">
+    <div v-if="authStore.isAuthenticated">
       <form @submit.prevent="submitReview">
         <div class="form-group">
           <h5 class="rating-label">Rating</h5>
@@ -44,15 +43,16 @@
       </form>
     </div>
 
-    <div v-if="!isLoggedIn">
+    <div v-if="!authStore.isAuthenticated">
       <p class="text-center mt-3">Login first to review this book!</p>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
 import { API_ENDPOINTS } from "@/config";
+import axios from "axios";
 
 export default {
   props: {
@@ -67,13 +67,12 @@ export default {
       ratingError: false,
       error: null,
       success: null,
-      isLoggedIn: false, 
-      user_id: null,
     };
   },
-  created() {
-    // Fetch the user data when the component is created
-    this.checkIfLoggedIn();
+  computed: {
+    authStore() {
+      return useAuthStore();
+    },
   },
   methods: {
     setRating(value) {
@@ -89,16 +88,13 @@ export default {
 
       const reviewData = {
         book_id: this.book_id,
-        user_id: this.user_id, // will change this later to get the current logged-in user's ID
+        user_id: this.authStore.user.id,
         review_text: this.review_text,
         rating: this.rating,
       };
 
       try {
-        const response = await axios.post(
-          `${API_ENDPOINTS.reviews}`,
-          reviewData
-        );
+        const response = await axios.post(API_ENDPOINTS.reviews, reviewData);
         this.success = "Review submitted successfully!";
         this.error = null;
 
@@ -110,26 +106,6 @@ export default {
         this.rating = null;
       } catch (err) {
         this.error = err.response?.data || "Failed to submit review.";
-      }
-    },
-
-    async checkIfLoggedIn() {
-      const token = localStorage.getItem("authToken");
-
-      if (token) {
-        try {
-          const response = await axios.get(API_ENDPOINTS.users.me, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          this.isLoggedIn = true;
-          this.user_id = response.data.id; 
-        } catch (error) {
-          this.isLoggedIn = false; 
-          this.user_id = null;
-        }
-      } else {
-        this.isLoggedIn = false;
-        this.user_id = null;
       }
     },
   },
