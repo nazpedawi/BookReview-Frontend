@@ -4,10 +4,10 @@
     title="Find Your Next Great Read"
   />
   <div class="text-center mt-4 mb-2">
-    <SearchForm />
+    <SearchForm v-model:searchQuery="searchQuery" v-model:selectedGenre="selectedGenre" />
   </div>
   <div class="mt-4 mb-4">
-    <BookList />
+    <BookList :searchQuery="searchQuery" :selectedGenre="selectedGenre" /> />
   </div>
 </template>
 
@@ -21,6 +21,13 @@ export default {
     HeroSection,
     SearchForm,
     BookList,
+  },
+
+  data() {
+    return {
+      searchQuery: "",
+      selectedGenre: "",  
+    };
   },
 };
 </script>
