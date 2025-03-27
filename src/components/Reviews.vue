@@ -38,7 +38,7 @@
       </ul>
     </div>
 
-    <!-- Message if there are no reviews -->
+    <!-- Message if there are no reviews for the book -->
     <div v-else>
       <p class="text-center mt-3">
         No reviews yet. Be the first to review this book!

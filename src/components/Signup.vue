@@ -46,7 +46,6 @@
                 />
               </div>
               
-              <!-- Password and Confirm Password in one row -->
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="password" class="form-label">Password</label>

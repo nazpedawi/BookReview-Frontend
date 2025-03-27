@@ -52,7 +52,7 @@ router.beforeEach(async (to, from, next) => {
       await authStore.fetchUser();
     }
 
-    // If trying to access restricted pages (AddBook, EditBook) as a non-admin, redirect to home
+    // If the user is not an admin and tries to access admin-only pages, redirect to home
     if (to.name === "AddBook" || to.name === "EditBook") {
       if (!authStore.isAdmin) {
         return next("/"); 

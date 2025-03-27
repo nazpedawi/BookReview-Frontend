@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid mt-4 mb-4">
-    <!-- Loading Spinner -->
     <div v-if="isLoading" class="spinner-container text-center">
       <div class="spinner-border text-secondary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -22,7 +21,6 @@
     <AddReview v-if="book" :book="book" @review-submitted="addNewReview" />
     <Reviews v-if="book" :reviews="reviews" />
 
-    <!-- Delete Confirmation Modal -->
     <DeleteModal
       v-if="isDeleteModalOpen"
       @confirm-delete="deleteBook"
@@ -74,8 +72,7 @@ export default {
         this.book = book;
         this.reviews = reviews;
       } catch (error) {
-        console.error("Error fetching book details:", error);
-        this.error = error.message || "Failed to load book.";
+        this.error = error?.response?.data?.error || "Failed to load book.";
       } finally {
         this.isLoading = false;
       }

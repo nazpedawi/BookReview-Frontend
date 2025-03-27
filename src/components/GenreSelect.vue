@@ -19,20 +19,20 @@ import { API_ENDPOINTS } from "@/config";
 
 export default {
   props: {
-    modelValue: String,  // To receive selectedGenre from parent
+    modelValue: String, 
   },
   data() {
     return {
       genres: [],
-      selectedGenre: this.modelValue,  // Initialize selectedGenre with parent prop
+      selectedGenre: this.modelValue,
     };
   },
   watch: {
     modelValue(newValue) {
-      this.selectedGenre = newValue;  // Sync modelValue with internal data
+      this.selectedGenre = newValue; 
     },
     selectedGenre(newValue) {
-      this.$emit('update:modelValue', newValue);  // Emit updated genre to parent
+      this.$emit('update:modelValue', newValue);
     },
   },
   methods: {

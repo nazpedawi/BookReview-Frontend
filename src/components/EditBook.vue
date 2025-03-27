@@ -12,7 +12,7 @@
     </div>
 
     <form @submit.prevent="submitForm">
-      <!-- Book Title -->
+    
       <div class="mb-3">
         <label for="title" class="form-label text-white">Book Title</label>
         <input
@@ -24,7 +24,6 @@
         />
       </div>
 
-      <!-- Book Description -->
       <div class="mb-3">
         <label for="description" class="form-label text-white"
           >Book Description</label
@@ -38,7 +37,6 @@
         ></textarea>
       </div>
 
-      <!-- Author -->
       <div class="mb-3">
         <label for="author" class="form-label text-white">Author</label>
         <input
@@ -50,7 +48,7 @@
         />
       </div>
 
-      <!-- Genre(s) -->
+    
       <div class="mb-3">
         <label class="form-label text-white">Genre(s)</label><br />
         <div class="row">
@@ -76,7 +74,6 @@
         </div>
       </div>
 
-      <!-- Publication Year -->
       <div class="mb-3">
         <label for="publication_year" class="form-label text-white"
           >Publication Year</label
@@ -93,7 +90,6 @@
         </select>
       </div>
 
-      <!-- Cover Image -->
       <div class="mb-5">
         <label for="cover_image" class="form-label text-white"
           >Cover Image (only jpg, png, jpeg, and webp file types are
@@ -108,7 +104,6 @@
         <small class="text-white">Leave blank to keep the current image.</small>
       </div>
 
-      <!-- Submit Button -->
       <div class="mb-3 d-flex justify-content-center">
         <button type="submit" class="btn btn-outline-light btn-lg w-50">
           <svg
@@ -132,7 +127,7 @@
 
 <script>
 import axios from "axios";
-import { API_ENDPOINTS } from "@/config"; // Adjust according to your project setup
+import { API_ENDPOINTS } from "@/config";
 
 export default {
   data() {
@@ -153,7 +148,7 @@ export default {
       genreError: false,
       error: null,
       success: null,
-      bookId: null, // To hold the book ID from the route params
+      bookId: null,
       isLoading: false,
     };
   },

@@ -6,25 +6,22 @@
     <div v-if="success" class="alert alert-success">{{ success }}</div>
 
     <form @submit.prevent="submitForm">
-      <!-- Book Title -->
+    
       <div class="mb-3">
         <label for="title" class="form-label text-white">Book Title</label>
         <input type="text" class="form-control" v-model="form.title" id="title" required />
       </div>
 
-      <!-- Book Description -->
       <div class="mb-3">
         <label for="description" class="form-label text-white">Book Description</label>
         <textarea class="form-control" v-model="form.description" id="description" rows="4" required></textarea>
       </div>
 
-      <!-- Author -->
       <div class="mb-3">
         <label for="author" class="form-label text-white">Author</label>
         <input type="text" class="form-control" v-model="form.author" id="author" required />
       </div>
 
-      <!-- Genre(s) -->
       <div class="mb-3">
         <label class="form-label text-white">Genre(s)</label><br />
         <div class="row">
@@ -48,7 +45,6 @@
         <div v-if="genreError" class="text-danger mt-2">Please select at least one genre.</div>
       </div>
 
-      <!-- Publication Year -->
       <div class="mb-3">
         <label for="publication_year" class="form-label text-white">Publication Year</label>
         <select
@@ -61,7 +57,6 @@
         </select>
       </div>
 
-      <!-- Cover Image -->
       <div class="mb-5">
         <label for="cover_image" class="form-label text-white">Cover Image (only jpg, png, jpeg, and webp file types are
           allowed)</label>
@@ -74,7 +69,6 @@
         />
       </div>
 
-      <!-- Submit Button -->
       <div class="mb-3 d-flex justify-content-center">
         <button type="submit" class="btn btn-outline-light btn-lg w-50">
           <svg
@@ -98,7 +92,7 @@
 
 <script>
 import axios from "axios";
-import { API_ENDPOINTS } from "@/config"; // Adjust according to your project setup
+import { API_ENDPOINTS } from "@/config";
 
 export default {
   data() {
@@ -107,11 +101,11 @@ export default {
         title: "",
         description: "",
         author: "",
-        genres: [], // Must be an array
+        genres: [],
         publication_year: "",
         cover_image: null,
       },
-      genres: [], // Holds genres fetched from the API
+      genres: [],
       years: Array.from({ length: new Date().getFullYear() - 1899 }, (_, i) => 1900 + i),
       genreError: false,
       error: null,
@@ -129,8 +123,8 @@ export default {
     const response = await axios.get(`${API_ENDPOINTS.genres}`);
     this.genres = response.data;
   } catch (error) {
-    this.genres = [];  // Clear the genres data
-    this.error = error.response?.data?.message || "Failed to load genres.";  // Use the error message from the response if available
+    this.genres = []; 
+    this.error = error.response?.data?.message || "Failed to load genres.";
   }
     },
 

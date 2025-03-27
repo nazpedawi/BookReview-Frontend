@@ -23,10 +23,6 @@
     emits: ["confirm-delete", "close-modal"],
     mounted() {
         try {
-      if (!window.bootstrap) {
-        throw new Error("Bootstrap is not available on window.");
-      }
-      // Initialize the modal using the global bootstrap object
       this.modalInstance = new window.bootstrap.Modal(this.$refs.modal);
       this.modalInstance.show();
     } catch (error) {
