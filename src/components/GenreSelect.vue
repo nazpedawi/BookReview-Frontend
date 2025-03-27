@@ -1,7 +1,10 @@
 <template>
   <div>
-    <label for="genre-select" class="form-label">Select Genre</label>
-    <select v-model="selectedGenre" class="form-control" id="genre-select">
+    <select
+      v-model="selectedGenre"
+      class="form-control form-control-md w-100"
+      id="genre-select"
+    >
       <option value="" disabled>Select Genre</option>
       <option v-for="genre in genres" :key="genre.id" :value="genre.name">
         {{ genre.name }}

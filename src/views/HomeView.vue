@@ -4,7 +4,10 @@
     title="Find Your Next Great Read"
   />
   <div class="text-center mt-4 mb-2">
-    <SearchForm v-model:searchQuery="searchQuery" v-model:selectedGenre="selectedGenre" />
+    <SearchForm  :searchQuery="searchQuery" 
+      :selectedGenre="selectedGenre"
+      @update:searchQuery="searchQuery = $event" 
+      @update:selectedGenre="selectedGenre = $event" />
   </div>
   <div class="mt-4 mb-4">
     <BookList :searchQuery="searchQuery" :selectedGenre="selectedGenre" /> />

@@ -139,9 +139,6 @@
 import { useAuthStore } from "@/stores/auth";
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
     authStore() {
       return useAuthStore();

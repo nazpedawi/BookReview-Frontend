@@ -74,6 +74,7 @@ export default {
       return useAuthStore();
     },
   },
+
   methods: {
     setRating(value) {
       this.rating = value;
@@ -88,7 +89,7 @@ export default {
 
       const reviewData = {
         book_id: this.book_id,
-        user_id: this.authStore.user.id,
+        user_id: this.authStore.user.user_id,
         review_text: this.review_text,
         rating: this.rating,
       };
@@ -98,10 +99,8 @@ export default {
         this.success = "Review submitted successfully!";
         this.error = null;
 
-        // Emit event to update the parent component
         this.$emit("review-submitted", response.data);
 
-        // Clear form
         this.review_text = "";
         this.rating = null;
       } catch (err) {

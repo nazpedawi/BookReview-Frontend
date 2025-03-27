@@ -12,6 +12,7 @@
   </form>
 </template>
 
+
 <script>
 import SearchInput from "@/components/SearchInput.vue";
 import GenreSelect from "@/components/GenreSelect.vue";

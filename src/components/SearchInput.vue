@@ -2,9 +2,10 @@
   <input
     v-model="searchQuery"
     type="text"
-    class="form-control form-control-md w-100 border-0"
+    class="form-control form-control-md w-100"
     placeholder="Search for books..."
     aria-label="Search"
+    @input="updateSearchQuery"
   />
 </template>
 
@@ -21,6 +22,11 @@ export default {
   watch: {
     modelValue(newValue) {
       this.searchQuery = newValue;
+    },
+  },
+  methods: {
+    updateSearchQuery() {
+      this.$emit('update:modelValue', this.searchQuery);
     },
   },
 };

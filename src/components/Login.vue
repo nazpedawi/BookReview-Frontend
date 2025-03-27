@@ -74,9 +74,11 @@ export default {
           password: this.password,
         });
         
-        this.$router.push("/"); 
+        if (!this.authStore.error) {
+      this.$router.push("/");
+    }
       } catch (error) {
-        console.error("Login failed:", error);
+        console.error(error);
       }
     },
   },

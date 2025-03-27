@@ -6,6 +6,10 @@
         :key="book.book_id"
         :book="book"
       />
+      
+      <div v-if="!isLoading && books.length === 0" class="col-12 text-center text-white">
+        <h3>No books found with title "{{ searchQuery }}" in the "{{ selectedGenre }}" genre.</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +35,6 @@ export default {
     };
   },
   watch: {
-    // Watch for changes in searchQuery or selectedGenre
     searchQuery: "loadBooks",
     selectedGenre: "loadBooks",
   },
@@ -44,7 +47,7 @@ export default {
         const response = await axios.get(API_ENDPOINTS.books, {
           params: {
             search: this.searchQuery,
-            genre: this.selectedGenre, 
+            genre: this.selectedGenre,
           },
         });
         this.books = response.data;

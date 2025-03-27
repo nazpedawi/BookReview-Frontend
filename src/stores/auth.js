@@ -19,31 +19,24 @@ export const useAuthStore = defineStore("auth", {
     async login(credentials) {
       this.loading = true;
       this.error = null;
-
+    
       try {
-        const response = await axios.post(API_ENDPOINTS.users.login, {
-          username: credentials.username,
-          password: credentials.password,
-        });
-
+        const response = await axios.post(API_ENDPOINTS.users.login, credentials);
+    
         if (response.data.token) {
           this.token = response.data.token;
           this.user = response.data.user;
           localStorage.setItem("authToken", this.token);
           axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
           return response;
-        } else {
-          this.error = 'Invalid username or password. Please try again.';
-          throw new Error(this.error);
         }
       } catch (error) {
-        this.error = error.response?.data?.message || 'There was an error logging in. Please try again later.';
-        throw new Error(this.error);
+        this.error = error?.response?.data?.error || "Something went wrong. Please try again.";
       } finally {
         this.loading = false;
       }
     },
-
+  
     async signup(userData) {
       this.loading = true;
       this.error = null;
@@ -80,9 +73,9 @@ export const useAuthStore = defineStore("auth", {
         try {
           await this.fetchUser();
         } catch (error) {
-          this.logout();
-        }
+            this.logout();
       }
+    }
     },
 
     async fetchUser() {
@@ -96,7 +89,7 @@ export const useAuthStore = defineStore("auth", {
 
           this.user = response.data;
         } catch (error) {
-          this.user = null;
+            this.logout();
         }
       } else {
         this.user = null;
