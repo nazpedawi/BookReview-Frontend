@@ -1,7 +1,7 @@
 # Book Review Website - Frontend
 
 
-## User Crdentials
+## User Credentials
 
 **Admin**
 
