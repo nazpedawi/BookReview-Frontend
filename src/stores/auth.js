@@ -40,24 +40,23 @@ export const useAuthStore = defineStore("auth", {
     async signup(userData) {
       this.loading = true;
       this.error = null;
-
+    
       try {
         const response = await axios.post(API_ENDPOINTS.users.signup, userData);
-
+    
         if (response.data.success) {
-          return response;
+          return true;
         } else {
-          this.error = 'Signup failed. Please try again.';
-          throw new Error(this.error);
+          return false;
         }
       } catch (error) {
-        this.error = error.response?.data?.message || 'There was an error signing up. Please try again later.';
-        throw new Error(this.error);
+        this.error =
+          error?.response?.data?.error || "There was an error signing up. Please try again later.";
       } finally {
         this.loading = false;
       }
     },
-
+    
     logout() {
       this.user = null;
       this.token = null;

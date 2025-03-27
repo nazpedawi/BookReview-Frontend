@@ -63,7 +63,8 @@
 
       <!-- Cover Image -->
       <div class="mb-5">
-        <label for="cover_image" class="form-label text-white">Cover Image</label>
+        <label for="cover_image" class="form-label text-white">Cover Image (only jpg, png, jpeg, and webp file types are
+          allowed)</label>
         <input
           type="file"
           class="form-control"
@@ -125,7 +126,6 @@ export default {
     async fetchGenres() {
   try {
     this.error = null;  
-
     const response = await axios.get(`${API_ENDPOINTS.genres}`);
     this.genres = response.data;
   } catch (error) {
@@ -135,47 +135,48 @@ export default {
     },
 
     async submitForm() {
-      if (this.form.genres.length === 0) {
-        this.genreError = true;
-        return;
-      }
-      this.genreError = false;
+  if (this.form.genres.length === 0) {
+    this.genreError = true;
+    return;
+  }
+  this.genreError = false;
 
-      const formData = new FormData();
-      formData.append("title", this.form.title);
-      formData.append("description", this.form.description);
-      formData.append("author", this.form.author);
-      formData.append("publication_year", this.form.publication_year);
-      this.form.genres.forEach(genreId => {
+  const formData = new FormData();
+  formData.append("title", this.form.title);
+  formData.append("description", this.form.description);
+  formData.append("author", this.form.author);
+  formData.append("publication_year", this.form.publication_year);
+  this.form.genres.forEach((genreId) => {
     formData.append("genres[]", genreId);
   });
-      formData.append("cover_image", this.form.cover_image);
+  formData.append("cover_image", this.form.cover_image);
 
-      try {
-        const response = await axios.post(API_ENDPOINTS.books, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+  try {
+    const response = await axios.post(API_ENDPOINTS.books, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-        this.success = "Book added successfully!";
-        this.error = null;
+    this.success = "Book added successfully!";
+    this.error = null;
 
-        // Reset form
-        this.form = {
-          title: "",
-          description: "",
-          author: "",
-          genres: [],
-          publication_year: "",
-          cover_image: null,
-        };
-        
-      } catch (err) {
-        this.error = err.response?.data || "Failed to add book.";
-      }
+    // Reset form
+    this.form = {
+      title: "",
+      description: "",
+      author: "",
+      genres: [],
+      publication_year: "",
+      cover_image: null,
+    };
+  } catch (err) {
+    if (err.response) {
+      this.error = err.response.data.error || "Failed to add book.";
+    }
+  }
+}
     },
-  },
   mounted() {
     this.fetchGenres();
   },

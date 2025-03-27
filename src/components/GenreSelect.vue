@@ -5,7 +5,7 @@
       class="form-control form-control-md w-100"
       id="genre-select"
     >
-      <option value="" disabled>Select Genre</option>
+    <option value="">All Genres</option> 
       <option v-for="genre in genres" :key="genre.id" :value="genre.name">
         {{ genre.name }}
       </option>

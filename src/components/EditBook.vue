@@ -195,11 +195,9 @@ export default {
         this.form.author = book.author;
         this.form.publication_year = book.publication_year;
         this.form.cover_image = book.cover_image;
-        console.log(book.genres);
         this.form.genres = book.genres.map(genre => genre.genre_id);
       } catch (error) {
-        console.error("Error fetching book details:", error);
-        this.error = error.message || "Failed to load book.";
+        this.error = error?.response?.data?.error || "Failed to load book.";
       } finally {
         this.isLoading = false;
       }
@@ -238,7 +236,7 @@ export default {
         this.success = "Book updated successfully!";
         this.error = null;
       } catch (err) {
-        this.error = err.response?.data || "Failed to update book.";
+        this.error = err.response?.data.error || "Failed to update book.";
       }
     },
   },

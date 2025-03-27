@@ -7,6 +7,11 @@
             <h4 class="text-center">Sign Up</h4>
           </div>
           <div class="card-body d-flex flex-column justify-content-between">
+            <!-- Display error if there is a signup issue -->
+            <div v-if="authStore.error" class="alert alert-danger">
+              {{ authStore.error }}
+            </div>
+
             <form @submit.prevent="submitForm" class="signup-form">
               <div class="row mb-3">
                 <div class="col-md-6">
@@ -40,16 +45,31 @@
                   required
                 />
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  v-model="password"
-                  required
-                />
+              
+              <!-- Password and Confirm Password in one row -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    v-model="password"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="confirmPassword" class="form-label">Confirm Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    v-model="confirmPassword"
+                    required
+                  />
+                </div>
               </div>
+
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input
@@ -60,14 +80,17 @@
                   required
                 />
               </div>
+
               <!-- Hidden input for role, defaulting to "RegularUser" -->
               <input type="hidden" v-model="role" value="RegularUser" />
+
               <div class="mb-3 text-center">
                 <button type="submit" class="btn btn-outline-light btn-lg w-100">
                   Sign Up
                 </button>
               </div>
             </form>
+
             <p class="text-center mt-3">
               Already have an account?
               <router-link to="/login">Login</router-link>
@@ -79,6 +102,7 @@
   </div>
 </template>
 
+
 <script>
 import { useAuthStore } from "@/stores/auth";
 
@@ -89,6 +113,7 @@ export default {
       lastName: "",
       username: "",
       password: "",
+      confirmPassword: "",
       email: "",
       role: "RegularUser",
     };
@@ -106,17 +131,17 @@ export default {
         lastName: this.lastName,
         username: this.username,
         password: this.password,
+        confirmPassword: this.confirmPassword,
         email: this.email,
         role: this.role,
       };
 
-      try {
-        await this.authStore.signup(userData); 
-        this.$router.push("/login");
-      } catch (error) {
-        console.error("Signup error", error);
-      }
-    },
+    const success = await this.authStore.signup(userData); // Check if signup was successful
+
+    if (success) {
+      this.$router.push("/login"); // Only redirect if signup was successful
+    }
+  },
   },
 };
 </script>

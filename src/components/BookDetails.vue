@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
-    <div class="card mb-3 book-details-card custom-card">
-      <div class="row no-gutters">
+    <div class="card mb-3 book-details-card custom-card h-100">
+      <div class="row no-gutters h-100">
         <div class="col-md-4">
           <img
             :src="getCoverImagePath(book.cover_image)"
@@ -10,8 +10,8 @@
           />
         </div>
 
-        <div class="col-md-8">
-          <div class="card-body d-flex flex-column">
+        <div class="col-md-8 d-flex flex-column">
+          <div class="card-body d-flex flex-column h-100">
             <div>
               <h3 class="card-title">{{ book.title }}</h3>
               <p class="card-text">{{ book.description }}</p>
@@ -43,12 +43,13 @@
                 <button
                   v-if="authStore.isAdmin"
                   @click="$emit('request-delete')"
-                  class="btn btn-outline-danger btn-lg w-100"
+                  class="btn btn-outline-danger btn-lg w-100 w-md-50"
                 >
                   Delete
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
